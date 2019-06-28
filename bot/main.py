@@ -1,11 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import division
 from random import randint
-from traceback import format_exc
-try:
-	import MySQLdb
-except:
-	pass
 from subprocess import *
 import StringIO
 import argparse
@@ -55,8 +50,8 @@ class API(object):
 		self.s.verify=False
 		#if 'win' not in sys.platform:
 		#	self.s.proxies.update({'http': 'socks5://127.0.0.1:9050','https': 'socks5://127.0.0.1:9050',})#self.t.getRandomProxy())
-		if 'win' in sys.platform:
-			self.s.proxies.update({'http': 'http://127.0.0.1:8888','https': 'https://127.0.0.1:8888',})
+		#if 'win' in sys.platform:
+		#	self.s.proxies.update({'http': 'http://127.0.0.1:8888','https': 'https://127.0.0.1:8888',})
 		self.settings={}
 		self.settings['qrVcDe48']=''
 		self.settings['user']={}
@@ -103,8 +98,8 @@ class API(object):
 		self.wM9AfX6I=None
 		self.F_RSC_VERSION=0
 		self.F_MST_VERSION=0
-		self.gl_base='https://v360lapis.gumi.sg/lapisProd/app/php/gme'
-		self.jp_base='https://v56-ios.game.exvius.com/lapis/app/php/gme'
+		self.gl_base='https://v365-lapis.gumi.sg/lapisProd/app/php/gme'
+		self.jp_base='https://v57-ios.game.exvius.com/lapis/app/php/gme'
 		print '[+] ready to work'
 
 	def setUSERID(self,id):
@@ -181,15 +176,10 @@ class API(object):
 			pass
 
 	def setDB(self):
-		if 'win' not in sys.platform and 'ffbf' <> socket.gethostname():
-			self.db=MySQLdb.connect("localhost","root","password","ffbf")
+		pass
 
 	def closeDB(self):
-		try:
-			if self.db:
-				self.db.close()
-		except:
-			pass
+		pass
 		
 	def setProxie(self,ip,port):
 		self.dolog('%s() was called'%(self.whoami()))
@@ -206,115 +196,25 @@ class API(object):
 			self.s.proxies.update({'http': 'http://%s'%(pp),'https': 'https://%s'%(pp),})
 
 	def addTMR(self,id,tmr,charname):
-		try:
-			if 'win' not in sys.platform and 'ffbf' <> socket.gethostname():
-				self.setDB()
-				if self.db and self.hasLicense():
-					cursor = self.db.cursor()
-					cursor.execute('''INSERT INTO bots (id, license, tmr,charname,user_id) VALUES(%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE id=%s,license=%s,tmr=%s,charname=%s,user_id=%s''',(id,self.settings['user']['license'],tmr,charname,self.settings['user']['m3Wghr1j'],id,self.settings['user']['license'],tmr,charname,self.settings['user']['m3Wghr1j']))
-					self.db.commit()
-					self.closeDB()
-		except:
-			pass
+		pass
 
 	def addLoot(self):
-		try:
-			if 'win' not in sys.platform and 'ffbf' <> socket.gethostname():
-				self.setDB()
-				if self.db and self.hasLicense():
-					cursor = self.db.cursor()
-					tmp=[]
-					for i in self.dropped_stuff:
-						tmp.append((self.settings['user']['license'],self.settings['user']['m3Wghr1j'],i[0],self.settings['user']['license'],self.settings['user']['m3Wghr1j'],i[0],i[1]))
-					for e in tmp:
-						#cursor.execute("REPLACE INTO `loot` (`id`, `license`, `user_id`, `item_id`, `count`) SELECT q2.`id` ,q1.`license` ,q1.`user_id` ,q1.`item_id` ,SUM(q1.`count`) FROM (SELECT `license` ,`user_id` ,`item_id` ,`count` FROM `loot` WHERE `license` = '%s' AND `user_id` = '%s' AND `item_id` = '%s' UNION ALL SELECT '%s' AS `license` ,'%s' AS `user_id` ,'%s' AS `item_id` ,%s AS `count`) AS q1 LEFT JOIN `loot` AS q2 ON q2.`license` = q1.`license` AND q2.`user_id` = q1.`user_id` AND q2.`item_id` = q1.`item_id` GROUP BY q2.`id` ,q1.`license` ,q1.`user_id` ,q1.`item_id`;"%(self.settings['user']['license'],self.settings['user']['m3Wghr1j'],i[0],self.settings['user']['license'],self.settings['user']['m3Wghr1j'],i[0],i[1]))
-						cursor.execute("REPLACE INTO `loot` (`id`, `license`, `user_id`, `item_id`, `count`) SELECT q2.`id` ,q1.`license` ,q1.`user_id` ,q1.`item_id` ,SUM(q1.`count`) FROM (SELECT `license` ,`user_id` ,`item_id` ,`count` FROM `loot` WHERE `license` = '%s' AND `user_id` = '%s' AND `item_id` = '%s' UNION ALL SELECT '%s' AS `license` ,'%s' AS `user_id` ,'%s' AS `item_id` ,%s AS `count`) AS q1 LEFT JOIN `loot` AS q2 ON q2.`license` = q1.`license` AND q2.`user_id` = q1.`user_id` AND q2.`item_id` = q1.`item_id` GROUP BY q2.`id` ,q1.`license` ,q1.`user_id` ,q1.`item_id`;"%(e))
-					#cursor.executemany("REPLACE INTO `loot` (`id`, `license`, `user_id`, `item_id`, `count`) SELECT q2.`id` ,q1.`license` ,q1.`user_id` ,q1.`item_id` ,SUM(q1.`count`) FROM (SELECT `license` ,`user_id` ,`item_id` ,`count` FROM `loot` WHERE `license` = %s AND `user_id` = %s AND `item_id` = %s UNION ALL SELECT %s AS `license` ,%s AS `user_id` ,%s AS `item_id` ,%s AS `count`) AS q1 LEFT JOIN `loot` AS q2 ON q2.`license` = q1.`license` AND q2.`user_id` = q1.`user_id` AND q2.`item_id` = q1.`item_id` GROUP BY q2.`id` ,q1.`license` ,q1.`user_id` ,q1.`item_id`;",tmp)
-					self.db.commit()
-					self.closeDB()
-					self.dropped_stuff[:]=[]
-		except:
-			pass
+		pass
 
 	def updateProxy(self,time):
-		try:
-			if 'win' not in sys.platform and 'ffbf' <> socket.gethostname():
-				self.setDB()
-				if self.db and self.proxy and self.hasLicense():
-					cursor = self.db.cursor()
-					cursor.execute('UPDATE proxy set time="%s" where license="%s" and proxy like "%%%s%%"'%(time,self.settings['user']['license'],self.proxy))
-					self.db.commit()
-					self.closeDB()
-		except:
-			pass
+		pass
 
 	def clearTMR(self):
-		try:
-			if 'win' not in sys.platform and 'ffbf' <> socket.gethostname():
-				self.setDB()
-				if self.db and self.hasLicense():
-					cursor = self.db.cursor()
-					cursor.execute("delete from bots where license='%s'"%(self.settings['user']['license']))
-					self.db.commit()
-					cursor.execute("delete from loot where license='%s' and user_id='%s'"%(self.settings['user']['license'],self.settings['user']['m3Wghr1j']))
-					self.db.commit()
-					self.closeDB()
-		except:
-			pass
+		pass
 
 	def clearStatus(self):
-		try:
-			if 'win' not in sys.platform and 'ffbf' <> socket.gethostname():
-				self.setDB()
-				if self.db and self.hasLicense():
-					cursor = self.db.cursor()
-					cursor.execute("delete from status where license='%s'"%(self.settings['user']['license']))
-					self.db.commit()
-					self.closeDB()
-		except:
-			pass
+		pass
 
 	def addAccountInfo(self,plain_res):
-		try:
-			if 'B6kyCQ9M' not in plain_res:
-				return
-			if 'win' not in sys.platform and 'ffbf' <> socket.gethostname():
-				self.setDB()
-				if self.db:
-					cursor = self.db.cursor()
-					plain_res=json.loads(plain_res)['3oU9Ktb7'][0]
-					current_energy=plain_res['B6kyCQ9M']
-					max_energy=plain_res['m0bD2zwU']
-					event_orb=plain_res['Ddsg1be4']
-					gil=plain_res['7UR4J2SE']
-					_license=self.settings['user']['license']
-					user_id=self.settings['user']['m3Wghr1j']#MILA
-					cursor.execute('''INSERT INTO info (license,user_id,current_energy,max_energy,event_orb,gil,exp,maxexp,pvp_orb,level) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE license=%s,user_id=%s,current_energy=%s,max_energy=%s,event_orb=%s,gil=%s,exp=%s,maxexp=%s,pvp_orb=%s,level=%s''',(_license,user_id,current_energy,max_energy,event_orb,gil,self.settings['user']['B6H34Mea'],self.t.findLevelExp(int(self.settings['user']['7wV3QZ80'])),self.settings['user']['xDm19iGS'],self.settings['user']['7wV3QZ80'],_license,user_id,current_energy,max_energy,event_orb,gil,self.settings['user']['B6H34Mea'],self.t.findLevelExp(int(self.settings['user']['7wV3QZ80'])),self.settings['user']['xDm19iGS'],self.settings['user']['7wV3QZ80']))
-					self.db.commit()
-					self.closeDB()
-		except:
-			pass
+		pass
 
 	def changeStatus(self,msg,run,type=0):
-		try:
-			if 'win' not in sys.platform and 'ffbf' <> socket.gethostname():
-				self.setDB()
-				if self.db and msg and self.hasLicense():
-					cursor = self.db.cursor()
-					runs=int(run)
-					if type==0:
-						status='<font color="red">%s</font>'%(msg)
-					elif type==1:
-						status='<font color="orange">%s</font>'%(msg)
-					elif type==2:
-						status='<font color="green">%s</font>'%(msg)
-					elif type==3:
-						status='<font color="blue">%s</font>'%(msg)
-					cursor.execute('''INSERT INTO status (license, status, runs,user_id,run_count,run_mid) VALUES(%s,%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE license=%s,status=%s,runs=%s,user_id=%s,run_count=%s,run_mid=%s''',(self.settings['user']['license'],status,runs,self.settings['user']['m3Wghr1j'] if 'm3Wghr1j' in self.settings['user'] else 'STARTER ACCOUNT',self.run_count,self.run_mid,self.settings['user']['license'],status,runs,self.settings['user']['m3Wghr1j'] if 'm3Wghr1j' in self.settings['user'] else 'STARTER ACCOUNT',self.run_count,self.run_mid))
-					self.db.commit()
-					self.closeDB()
-		except:
-			pass
+		pass
 
 	def setPlayerID(self,id,device):
 		self.dolog('id %s device %s'%(id,device))
@@ -498,7 +398,7 @@ class API(object):
 	def createVersionTag(self):
 		#self.dolog('%s() was called'%(self.whoami()))
 		_data=[]
-		_data.append(self.makemesort('F_APP_VERSION_IOS' if self.settings['K1G4fBjF']=='1' else 'F_APP_VERSION_AND','1654' if self.isJapan else '1065'))
+		_data.append(self.makemesort('F_APP_VERSION_IOS' if self.settings['K1G4fBjF']=='1' else 'F_APP_VERSION_AND','1654' if self.isJapan else '1070'))
 		_data.append(self.makemesort('F_RSC_VERSION',str(self.F_RSC_VERSION)))
 		_data.append(self.makemesort('F_MST_VERSION',str(self.F_MST_VERSION)))
 		return _data
@@ -635,8 +535,6 @@ class API(object):
 				return None
 		else:
 			_data=repeat
-		#self.s.headers.update({'X-Forwarded-For':self.t.genRandomIP()})
-		#self.s.headers.update({'X-Forwarded-For':'54.200.250.125'})
 		if self.isJapan:
 			tmpurl=self.jp_base+point
 		else:
