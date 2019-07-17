@@ -98,7 +98,7 @@ class API(object):
 		self.wM9AfX6I=None
 		self.F_RSC_VERSION=0
 		self.F_MST_VERSION=0
-		self.gl_base='https://v365-lapis.gumi.sg/lapisProd/app/php/gme'
+		self.gl_base='https://v367lapis.gumi.sg/lapisProd/app/php/gme'
 		self.jp_base='https://v57-ios.game.exvius.com/lapis/app/php/gme'
 		print '[+] ready to work'
 
@@ -398,7 +398,7 @@ class API(object):
 	def createVersionTag(self):
 		#self.dolog('%s() was called'%(self.whoami()))
 		_data=[]
-		_data.append(self.makemesort('F_APP_VERSION_IOS' if self.settings['K1G4fBjF']=='1' else 'F_APP_VERSION_AND','1654' if self.isJapan else '1070'))
+		_data.append(self.makemesort('F_APP_VERSION_IOS' if self.settings['K1G4fBjF']=='1' else 'F_APP_VERSION_AND','1654' if self.isJapan else '1072'))
 		_data.append(self.makemesort('F_RSC_VERSION',str(self.F_RSC_VERSION)))
 		_data.append(self.makemesort('F_MST_VERSION',str(self.F_MST_VERSION)))
 		return _data
